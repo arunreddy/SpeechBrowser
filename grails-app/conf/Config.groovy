@@ -88,4 +88,11 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+		   
+	    appenders {
+        file name:'file', file:'/tmp/mylog.log'
+    }
+    root {
+        info 'stdout', 'file'
+    }
 }
