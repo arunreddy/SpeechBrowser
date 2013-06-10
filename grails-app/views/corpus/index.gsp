@@ -42,14 +42,20 @@
 				</ul>
 				<div>
 					<table class="table">
+					<thead>
+						<tr>
+							<th>File Name</th>
+							<th>Mimetype</th>
+						</tr>
+					</thead>
+					<tbody>
 						<% audioFiles.each{ audioFile -> %>
 						<tr>
 								<td><%="${audioFile.name}"%></td>
-	 							<td><%="${audioFile.path}"%></td>
-								<td><%="${audioFile.mimetype}"%></td>
-								 
+	 							<td><%="${audioFile.mimetype}"%></td> 
 						</tr>
 						<%  } %>
+						</tbody>
 					</table>
 				</div>
 			</div>
