@@ -29,6 +29,7 @@
  *
  * Also, as you may note: Whoa, reliable cross-platform/device audio support is hard! ;)
  */
+console.log("Loading soundmanager2.js");
 
 (function(window, _undefined) {
 
@@ -5939,3 +5940,5 @@ window.SoundManager = SoundManager; // constructor
 window.soundManager = soundManager; // public API, flash callbacks etc.
 
 }(window));
+
+console.log("Loading soundmanager2.js complete..");
