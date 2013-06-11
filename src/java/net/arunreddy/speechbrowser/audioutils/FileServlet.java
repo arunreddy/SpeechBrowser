@@ -26,14 +26,15 @@ public class FileServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String filePath = request.getParameter("path");
+		String dataPath = System.getenv("speech_data_dir");
+		String filePath = dataPath+request.getParameter("path");
+
 		File file = new File(filePath);
 		int length = 0;
 		ServletOutputStream outStream = response.getOutputStream();
 		ServletContext context = getServletConfig().getServletContext();
 		String mimetype = context.getMimeType(filePath);
 
-		System.out.println(mimetype);
 		// sets response content type
 		if (mimetype == null) {
 			mimetype = "application/octet-stream";

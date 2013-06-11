@@ -69,7 +69,7 @@
 
 	<servlet>
 		<servlet-name>fileServlet</servlet-name>
-		<servlet-class>net.arunreddy.grails.testproject.FileServlet</servlet-class>
+		<servlet-class>net.arunreddy.speechbrowser.audioutils.FileServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
