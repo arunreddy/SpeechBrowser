@@ -13,11 +13,13 @@ hibernate {
 environments {
 	development {
 		dataSource {
-			dbCreate = "update"
-			driverClassName = "com.mysql.jdbc.Driver"
-			url = "jdbc:mysql://localhost/speechbrowser_dev"
-			username = System.env.grails_user 
-			password = System.env.grails_password
+			dbCreate = "create-drop"
+			url = "jdbc:h2:mem:devDb"
+//			dbCreate = "update"
+//			driverClassName = "com.mysql.jdbc.Driver"
+//			url = "jdbc:mysql://localhost/speechbrowser_dev"
+//			username = System.env.grails_user 
+//			password = System.env.grails_password
 		}
 	}
 	test {
