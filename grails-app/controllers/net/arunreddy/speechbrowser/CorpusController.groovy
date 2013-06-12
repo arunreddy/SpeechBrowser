@@ -6,6 +6,8 @@ class CorpusController {
 	Collection corpusDirs
 	CorpusDir corpusDir
 	Collection audioFiles
+    
+    def syncAudioFileService
 	
     def index() { 
 		log.info(params)
@@ -22,4 +24,16 @@ class CorpusController {
 		audioFiles = corpusDir.audioFiles
 		log.info(audioFiles)
 	}
+    
+    
+    def synchronize(){
+        
+        def textToRender="Synchronizing..."
+        try{
+            textToRender+=syncAudioFileService.doSomething()
+        }catch(e){
+            render "Error occured.${e}"
+        }
+        render textToRender     
+    }
 }
