@@ -14,8 +14,9 @@ class AudioFile {
     int duration
     Date dateCreated
     Date lastUpdated
+    Corpus corpus
 
-    static belongsTo = [corpusDir: CorpusDir]
+    static belongsTo = [corpus: Corpus]
 
     static constraints = {
         path(blank: false)

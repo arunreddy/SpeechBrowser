@@ -21,9 +21,12 @@ package net.arunreddy.speechbrowser.sync;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import net.arunreddy.speechbrowser.AudioFile;
 import net.arunreddy.speechbrowser.Corpus;
 
 /**
@@ -63,13 +66,24 @@ public class SyncAudioFiles
             // Check if corpus exists.
             Corpus corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
 
-            System.out.println(">>"+corpus_db.getName());
+            // If corpus doesnt exist in the db, add an entry and validate.
+            if (corpus_db == null) {
+                corpus_db = new Corpus();
+                corpus_db.setName(corpus.getName());
+                corpus_db.setPath(corpus.getName());
+                corpus_db.setDescription("Add description " + corpus.getName());
+
+                System.out.println("Adding new corpus..");
+                syncAudioFileService.updateOrSave(corpus_db);
+                corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
+            }
+
+            walkAndUpdate(corpus, corpus.getName(), corpus_db);
 
         }
         // Walk through all the files.
 
         // Add to the database.
-        
 
         // System.out.println(corpus);
         // if (corpus.isDirectory()) {
@@ -96,7 +110,46 @@ public class SyncAudioFiles
         // }
         // }
 
+    }
 
+    public void walkAndUpdate(File dir, String path, Corpus corpus_db)
+    {
+
+        for (File file : dir.listFiles(ACCEPT_FILTER)) {
+
+            // Is directory - recurse
+            if (file.isDirectory()) {
+                walkAndUpdate(file, path + File.separatorChar + file.getName(), corpus_db);
+            } else {
+                if (validAudioFile(file.getName())) {
+                    // Check if file exists.
+                    AudioFile audioFile = (AudioFile) syncAudioFileService.getAudioFile(file.getName(), path);
+
+                    // If exists ignore it.
+                    if (audioFile != null) {
+
+                        // else Create a new object and save it to database.
+                    } else {
+                        audioFile = new AudioFile();
+                        audioFile.setName(file.getName());
+                        audioFile.setPath(path);
+                        try {
+                            audioFile.setMimetype(file.toURI().toURL().openConnection().getContentType());
+                        } catch (MalformedURLException e) {
+                           
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        audioFile.setCorpus(corpus_db);
+                        syncAudioFileService.updateOrSave(audioFile);
+                    }
+                }
+            }
+
+        }
+
+        // Is directory.
     }
 
     /**

@@ -4,7 +4,6 @@ class CorpusController {
 
 	Corpus corpus
 	Collection corpusDirs
-	CorpusDir corpusDir
 	Collection audioFiles
     
     def syncAudioFileService
