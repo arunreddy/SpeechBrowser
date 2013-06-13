@@ -31,37 +31,25 @@
 				<div id="left-container-bottom">
 					<div>
 						<h4>Directory</h4>
-						<ul class="nav nav-tabs nav-stacked">
-							<% corpusDirs.each{ cdir -> %>
-						
-								<li><a href="./<%="${cdir.id}"%>"><%="${cdir.name}"%></a></li>
-					
-							<% } %>
-						</ul>
+
 					</div>
 				</div>
 			</div>
 			<div class="span9" id="right-container">
-				<ul class="nav nav-tabs">
-					<li><a href="#home" data-toggle="tab">Corpus</a></li>
-					<li><a href="#home" data-toggle="tab">Settings</a></li>
-				</ul>
+				<div class="row-fluid">
+					<div class="span6">
+						<h3>
+							${corpus.name}
+						</h3>
+					</div>
+					<div class="span6">
+						<g:paginate next="&rsaquo;" prev="&laquo;" controller="corpus"
+							action="index" params="[id:params.id]" total="${fileCount}" />
+
+					</div>
+				</div>
 				<div>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>File Name</th>
-								<th>Mimetype</th>
-							</tr>
-						</thead>
-						<tbody>
-							<% audioFiles.each{ audioFile -> %>
-						<tr class="graphic">
-								<td><a href="/SpeechBrowser/fileServlet?path=<%="${corpus.path}/${corpusDir.path}/${audioFile.path}"%>"   type="audio/x-wav"><%="${audioFile.path}"%></a></td>
-						</tr>
-						<%  } %>
-						</tbody>
-					</table>
+					<g:render template="audiofile" collection="${audioFiles}" />
 				</div>
 			</div>
 		</div>
@@ -72,5 +60,11 @@
 	<g:javascript library="soundmanager2" />
 	<g:javascript library="inline" />
 
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('div.pagination').addClass('pagination-mini').addClass('pagination-right').css("margin","0px").css("margin-top","30px");
+			$('hr').css("margin","5px");
+		});
+	</script>
 </body>
 </html>

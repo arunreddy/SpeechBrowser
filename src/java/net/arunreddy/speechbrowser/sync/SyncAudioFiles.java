@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import net.arunreddy.speech.audio.wav.WavFile;
 import net.arunreddy.speechbrowser.AudioFile;
 import net.arunreddy.speechbrowser.Corpus;
 
@@ -37,8 +38,7 @@ public class SyncAudioFiles
 
     private SyncAudioFileService syncAudioFileService;
 
-    public static final String DATASET_PATH = System.getenv("speech_data_dir") == null
-        ? "/Users/venus/arun/drive/speech-corpus/" : System.getenv("speech_data_dir");
+    public static final String DATASET_PATH = System.getenv("speech_data_dir");
 
     private static final FilenameFilter ACCEPT_FILTER = new FilenameFilter()
     {
@@ -56,11 +56,13 @@ public class SyncAudioFiles
 
     public void synchronizeAudioFiles()
     {
+    	
+    	System.out.println("Syncing files.."+DATASET_PATH);
         // Audio dataset path.
         File dataSetPath = new File(DATASET_PATH);
         MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
 
-        System.out.println("Synching files..");
+        System.out.println("Syncing files.."+dataSetPath);
         for (File corpus : dataSetPath.listFiles(ACCEPT_FILTER)) {
 
             // Check if corpus exists.
@@ -133,11 +135,33 @@ public class SyncAudioFiles
                         audioFile = new AudioFile();
                         audioFile.setName(file.getName());
                         audioFile.setPath(path);
+
                         try {
+                        	
+                        	//Set audio properties.
+                            // Open the wav file specified as the first argument
+                            WavFile wavFile = WavFile.openWavFile(file);
+
+                            long noOfFrames = wavFile.getNumFrames();
+                            long bitRate = wavFile.getSampleRate();
+
+                            long numFrames = wavFile.getNumFrames();
+                            int numChannels = wavFile.getNumChannels();
+                            int validBits = wavFile.getValidBits();
+                            long sampleRate = wavFile.getSampleRate();
+                            
+                            int duration = (int)(((double)numFrames/sampleRate)*1000);
+                        	
+                        	audioFile.setChannels(numChannels);
+                        	audioFile.setSampleRate((int)sampleRate);
+                        	audioFile.setFrames(noOfFrames);
+                        	audioFile.setDuration(duration);
+                        	
+                        	
                             audioFile.setMimetype(file.toURI().toURL().openConnection().getContentType());
                         } catch (MalformedURLException e) {
                            
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }

@@ -27,6 +27,9 @@ public class FileServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String dataPath = System.getenv("speech_data_dir");
+		if(!dataPath.endsWith(File.separatorChar+"")){
+			dataPath+=File.separatorChar;
+		}
 		String filePath = dataPath+request.getParameter("path");
 
 		File file = new File(filePath);

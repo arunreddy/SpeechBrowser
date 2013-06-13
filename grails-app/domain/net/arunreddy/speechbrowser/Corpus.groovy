@@ -7,7 +7,7 @@ class Corpus {
     String description
 	Date dateCreated
 	Date lastUpdated
-	Collection corpusDirs
+	Collection audioFiles
 	
 	static hasMany = [audioFiles: AudioFile]
 	

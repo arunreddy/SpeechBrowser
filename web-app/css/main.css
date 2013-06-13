@@ -48,21 +48,31 @@ html,body {
 	margin: 20px 0;
 }
 
-
 /* Main container
       -----------------------------------------------*/
- #left-container{
- 	border-right: dotted 1px #aaa; 
- }    
- 
- #left-container-top{
- 	min-height: 200px;
- }
- 
- #left-container-bottom{
- 	border-top: dotted 1px #aaa; 
- }
- 
- #right-container{
- 
- }
+#left-container {
+	border-right: dotted 1px #aaa;
+}
+
+#left-container-top {
+	min-height: 200px;
+}
+
+#left-container-bottom {
+	border-top: dotted 1px #aaa;
+}
+
+#right-container {
+	
+}
+
+/* AUdio files.
+ -----------------------------------------------------*/
+.audio-file {
+	border-top: 1px solid #DDDDDD;
+    line-height: 20px;
+    padding: 4px;
+    text-align: left;
+    vertical-align: top;
+}
+

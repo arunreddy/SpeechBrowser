@@ -68,7 +68,7 @@ ul.flat {
 }
 
 ul.flat li,
-tr.graphic td {
+div.graphic {
  padding-bottom:1px;
 }
 
@@ -91,12 +91,12 @@ tr.graphic {
  padding:0px;
 }
 
-tr.graphic td {
+div.graphic {
  margin-bottom:2px;
 }
 
-tr.graphic td a,
-tr.graphic td a.sm2_link {
+div.graphic a,
+div.graphic a.sm2_link {
  /* assume all items will be sounds rather than wait for onload etc. in this example.. may differ for your uses. */
  display:inline-block;
  padding-left:22px;
@@ -110,7 +110,7 @@ tr.graphic td a.sm2_link {
  color:#f6f9ff;
 }
 
-tr.graphic td a.sm2_link {
+div.graphic a.sm2_link {
  /* safari 3.1+ fun (or, proprietary crap. TBD.) */
  -webkit-transition-property: hover;
  -webkit-transition: background-color 0.15s linear;
@@ -119,39 +119,39 @@ tr.graphic td a.sm2_link {
   -o-transition-duration: 0.15s;
 }
 
-tr.graphic td a, /* use a.sm2_link {} if you want play icons showing only if SM2 is supported */
-tr.graphic td a.sm2_paused:hover,
-tr.graphic td a.sm2_link:hover {
+div.graphic a, /* use a.sm2_link {} if you want play icons showing only if SM2 is supported */
+div.graphic a.sm2_paused:hover,
+div.graphic a.sm2_link:hover {
  background-image:url(../images/icon_play.png);
  background-position:3px 50%;
  background-repeat:no-repeat;
  _background-image:url(../images/icon_play.gif); /* IE 6 */
 }
 
-tr.graphic td a.sm2_link:hover {
+div.graphic a.sm2_link:hover {
  /* default hover color, if you'd like.. */
  background-color:#003366;
  color:#fff;
 }
 
-tr.graphic td a.sm2_paused {
+div.graphic a.sm2_paused {
  background-color:#999;
 }
 
-tr.graphic td a.sm2_paused:hover {
+div.graphic a.sm2_paused:hover {
  background:#003366 url(../images/icon_play.png) no-repeat 3px 50%;
  _background-image:url(../images/icon_play.gif);
 }
 
-tr.graphic td a.sm2_playing,
-tr.graphic td a.sm2_playing:hover {
+div.graphic a.sm2_playing,
+div.graphic a.sm2_playing:hover {
  background:#003366 url(../images/icon_pause.png) no-repeat 3px 50%;
  _background-image:url(../images/icon_pause.gif);
  text-decoration:none;
 }
 
 /* hide button while playing?
-tr.graphic td a.sm2_playing {
+div.graphic a.sm2_playing {
  background-image:none;
 }
 */
