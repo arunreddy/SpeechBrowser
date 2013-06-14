@@ -1,4 +1,4 @@
-package net.arunreddy.speechbrowser
+package net.arunreddy.speechbrowser.groovy
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ class AudioFile {
     int sampleRate
     int bitDepth
     long frames
-    int duration
+    double duration
     Date dateCreated
     Date lastUpdated
     Corpus corpus

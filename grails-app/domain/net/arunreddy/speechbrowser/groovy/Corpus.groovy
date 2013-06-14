@@ -1,4 +1,4 @@
-package net.arunreddy.speechbrowser
+package net.arunreddy.speechbrowser.groovy
 
 class Corpus {
 

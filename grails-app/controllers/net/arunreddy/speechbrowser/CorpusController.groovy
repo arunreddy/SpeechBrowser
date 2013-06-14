@@ -1,5 +1,8 @@
 package net.arunreddy.speechbrowser
 
+import net.arunreddy.speechbrowser.groovy.AudioFile;
+import net.arunreddy.speechbrowser.groovy.Corpus;
+
 class CorpusController {
 
 	Collection corpora
@@ -9,6 +12,8 @@ class CorpusController {
 	int fileCount
 
 	def syncAudioFileService
+
+	def audioSegmenterService
 
 	def index() {
 		log.info(params)
@@ -31,5 +36,13 @@ class CorpusController {
 			render "Error occured.${e}"
 		}
 		render textToRender
+	}
+
+	def segment(){
+		try{
+			audioSegmenterService.segmentAudio();
+		}catch(e){
+			render "Error occured.${e}"
+		}
 	}
 }

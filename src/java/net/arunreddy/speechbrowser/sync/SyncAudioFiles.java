@@ -21,14 +21,13 @@ package net.arunreddy.speechbrowser.sync;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 import javax.activation.MimetypesFileTypeMap;
 
-import net.arunreddy.speech.audio.wav.WavFile;
-import net.arunreddy.speechbrowser.AudioFile;
-import net.arunreddy.speechbrowser.Corpus;
+import net.arunreddy.speech.audio.type.WavFile;
+import net.arunreddy.speechbrowser.groovy.AudioFile;
+import net.arunreddy.speechbrowser.groovy.Corpus;
 
 /**
  * @version $Id$
@@ -65,6 +64,9 @@ public class SyncAudioFiles
         System.out.println("Syncing files.."+dataSetPath);
         for (File corpus : dataSetPath.listFiles(ACCEPT_FILTER)) {
 
+        	if(corpus==null || corpus.getName().contains("segment")){
+        		continue;
+        	}
             // Check if corpus exists.
             Corpus corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
 
@@ -119,6 +121,11 @@ public class SyncAudioFiles
 
         for (File file : dir.listFiles(ACCEPT_FILTER)) {
 
+        	
+        	if(file==null || file.getName().contains("segment")){
+        		continue;
+        	}
+        	
             // Is directory - recurse
             if (file.isDirectory()) {
                 walkAndUpdate(file, path + File.separatorChar + file.getName(), corpus_db);
@@ -150,12 +157,13 @@ public class SyncAudioFiles
                             int validBits = wavFile.getValidBits();
                             long sampleRate = wavFile.getSampleRate();
                             
-                            int duration = (int)(((double)numFrames/sampleRate)*1000);
+                            double duration =(((double)numFrames/sampleRate));
                         	
                         	audioFile.setChannels(numChannels);
                         	audioFile.setSampleRate((int)sampleRate);
                         	audioFile.setFrames(noOfFrames);
                         	audioFile.setDuration(duration);
+                        	audioFile.setBitDepth(validBits);
                         	
                         	
                             audioFile.setMimetype(file.toURI().toURL().openConnection().getContentType());
