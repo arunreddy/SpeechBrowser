@@ -1,4 +1,4 @@
-package net.arunreddy.speechbrowser
+package net.arunreddy.speechbrowser.groovy
 
 import net.arunreddy.speechbrowser.bridge.AudioFileSegmenter;
 import net.arunreddy.speechbrowser.groovy.AudioFile;
@@ -7,15 +7,15 @@ import net.arunreddy.speechbrowser.groovy.Corpus;
 import org.springframework.transaction.annotation.Transactional
 
 class AudioSegmenterService {
-
-	@Transactional(readOnly = true)
-	def segmentAudio(){
+	
+	@Transactional
+	def segmentAudio(id){
 		log.info("Segmenting audio..")
 		def audioSegmenterObj=new AudioFileSegmenter();
 		audioSegmenterObj.setAudioSegmenterService(this);
-		AudioFile af=AudioFile.findById(4252)
-		log.info(af)
-		audioSegmenterObj.segmentAudio(af)
+		AudioFile af=AudioFile.get(id)		
+		Collection audioSegments = audioSegmenterObj.segmentAudio(af)
+		return audioSegments
 	}
 
 

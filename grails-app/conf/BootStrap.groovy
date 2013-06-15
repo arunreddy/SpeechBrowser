@@ -4,7 +4,7 @@ import net.arunreddy.speechbrowser.groovy.Corpus;
 class BootStrap {
 
 	def init = { servletContext ->
-
+//
 //		Corpus cvar
 //		//if corpus doesnt exist.
 //		if(!Corpus.count()){

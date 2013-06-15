@@ -1,7 +1,8 @@
-package net.arunreddy.speechbrowser.sync
+package net.arunreddy.speechbrowser.groovy.sync
 
 import net.arunreddy.speechbrowser.groovy.AudioFile
 import net.arunreddy.speechbrowser.groovy.Corpus
+import net.arunreddy.speechbrowser.sync.SyncAudioFiles;
 
 import org.springframework.transaction.annotation.Transactional
 

@@ -4,25 +4,35 @@ import java.util.Date;
 
 class AudioFile {
 
-    String path
-    String name
-    String mimetype
-    int channels
-    int sampleRate
-    int bitDepth
-    long frames
-    double duration
-    Date dateCreated
-    Date lastUpdated
-    Corpus corpus
+	String path
+	String name
+	String mimetype
+	int channels
+	int sampleRate
+	int bitDepth
+	long frames
+	double duration
+	Date dateCreated
+	Date lastUpdated
+	String utterance
+	Corpus corpus
 
-    static belongsTo = [corpus: Corpus]
+	Collection audioSegments
 
-    static constraints = {
-        path(blank: false)
-        name(blank: false)
-        mimetype(blank:false)
-    }
+	static belongsTo = [corpus: Corpus]
 
-    static mapping = { autoTimestamp true }
+	static hasMany = [audioSegments:AudioSegment]
+
+	static constraints = {
+		path(blank: false)
+		name(blank: false)
+		mimetype(blank:false)
+		utterance(blank:true)
+		utterance defaultValue : 'NONE'
+	}
+
+	static mapping = {
+		autoTimestamp true
+		utterance type: 'text'
+	}
 }
