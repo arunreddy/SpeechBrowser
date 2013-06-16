@@ -3,6 +3,8 @@ package net.arunreddy.speechbrowser.sync
 
 
 import grails.test.mixin.*
+import net.arunreddy.speechbrowser.groovy.sync.SyncAudioFileService;
+
 import org.junit.*
 
 /**

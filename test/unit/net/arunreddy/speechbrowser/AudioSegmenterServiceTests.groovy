@@ -3,6 +3,8 @@ package net.arunreddy.speechbrowser
 
 
 import grails.test.mixin.*
+import net.arunreddy.speechbrowser.groovy.AudioSegmenterService;
+
 import org.junit.*
 
 /**

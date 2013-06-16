@@ -60,6 +60,8 @@ public class FileServlet extends HttpServlet {
 
 		in.close();
 		outStream.close();
+		
+		
 	}
 
 }
