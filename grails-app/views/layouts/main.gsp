@@ -25,6 +25,8 @@
 <g:layoutTitle />
 <g:layoutHead />
 <r:layoutResources />
+<link rel="stylesheet" type="text/css"
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css">
 </head>
 <body>
 	<!-- Part 1: Wrap all page content here -->
@@ -68,5 +70,7 @@
 	</div>
 	<g:javascript library="application" />
 	<r:layoutResources />
+	<script
+		src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 </body>
 </html>

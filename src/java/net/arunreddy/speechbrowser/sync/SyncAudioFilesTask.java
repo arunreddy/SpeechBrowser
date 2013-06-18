@@ -18,173 +18,176 @@ import net.arunreddy.speechbrowser.groovy.sync.SyncAudioFileService;
 
 /**
  * @author arun
- * 
  */
-public class SyncAudioFilesTask implements Callable<Integer> {
+public class SyncAudioFilesTask implements Callable<Integer>
+{
 
-	private SyncAudioFileService syncAudioFileService;
+    private SyncAudioFileService syncAudioFileService;
 
-	public static final String DATASET_PATH = System.getenv("speech_data_dir");
+    public static final String DATASET_PATH = System.getenv("speech_data_dir");
 
-	private SyncStatus syncStatus;
+    private SyncStatus syncStatus;
 
-	private static final FilenameFilter ACCEPT_FILTER = new FilenameFilter() {
+    private static final FilenameFilter ACCEPT_FILTER = new FilenameFilter()
+    {
 
-		@Override
-		public boolean accept(File dir, String name) {
-			if (name.startsWith(".")) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-	};
+        @Override
+        public boolean accept(File dir, String name)
+        {
+            if (name.startsWith(".")) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    };
 
-	public SyncAudioFilesTask(SyncAudioFileService syncAudioFileService,SyncStatus syncStatus){
-		this.syncAudioFileService=syncAudioFileService;
-		this.syncStatus = syncStatus;
-	}
+    public SyncAudioFilesTask(SyncStatus syncStatus)
+    {
+        this.syncStatus = syncStatus;
+        System.out.println(syncStatus.getSyncAudioFileService());
+        this.syncAudioFileService = syncStatus.getSyncAudioFileService();
 
-	/**
-	 * @return the syncStatus
-	 */
-	public SyncStatus getSyncStatus() {
-		return syncStatus;
-	}
+    }
 
-	public void walkAndUpdate(File dir, String path, Corpus corpus_db) {
+    /**
+     * @return the syncStatus
+     */
+    public SyncStatus getSyncStatus()
+    {
+        return syncStatus;
+    }
 
-		for (File file : dir.listFiles(ACCEPT_FILTER)) {
+    public void walkAndUpdate(File dir, String path, Corpus corpus_db)
+    {
 
-			if (file == null || file.getName().contains("segment")) {
-				continue;
-			}
+        for (File file : dir.listFiles(ACCEPT_FILTER)) {
 
-			// Is directory - recurse
-			if (file.isDirectory()) {
-				walkAndUpdate(file, path + File.separatorChar + file.getName(),
-						corpus_db);
-			} else {
-				if (validAudioFile(file.getName())) {
-					// Check if file exists.
-					AudioFile audioFile = (AudioFile) syncAudioFileService
-							.getAudioFile(file.getName(), path);
+            if (file == null || file.getName().contains("segment")) {
+                continue;
+            }
 
-					// If exists ignore it.
-					if (audioFile != null) {
+            // Is directory - recurse
+            if (file.isDirectory()) {
+                walkAndUpdate(file, path + File.separatorChar + file.getName(), corpus_db);
+            } else {
+                if (validAudioFile(file.getName())) {
+                    // Check if file exists.
+                    AudioFile audioFile = (AudioFile) syncAudioFileService.getAudioFile(file.getName(), path);
 
-						// else Create a new object and save it to database.
-					} else {
-						audioFile = new AudioFile();
-						audioFile.setName(file.getName());
+                    // If exists ignore it.
+                    if (audioFile != null) {
 
-						try {
+                        // else Create a new object and save it to database.
+                    } else {
+                        audioFile = new AudioFile();
+                        audioFile.setName(file.getName());
 
-							path = file.toURI().toURL().getPath();
-							audioFile.setPath(path.replaceAll(DATASET_PATH
-									+ "/", ""));
+                        try {
 
-							// Set audio properties.
-							// Open the wav file specified as the first argument
-							WavFile wavFile = WavFile.openWavFile(file);
+                            path = file.toURI().toURL().getPath();
+                            audioFile.setPath(path.replaceAll(DATASET_PATH + "/", ""));
 
-							long noOfFrames = wavFile.getNumFrames();
-							long bitRate = wavFile.getSampleRate();
+                            // Set audio properties.
+                            // Open the wav file specified as the first argument
+                            WavFile wavFile = WavFile.openWavFile(file);
 
-							long numFrames = wavFile.getNumFrames();
-							int numChannels = wavFile.getNumChannels();
-							int validBits = wavFile.getValidBits();
-							long sampleRate = wavFile.getSampleRate();
+                            long noOfFrames = wavFile.getNumFrames();
+                            long bitRate = wavFile.getSampleRate();
 
-							double duration = (((double) numFrames / sampleRate));
+                            long numFrames = wavFile.getNumFrames();
+                            int numChannels = wavFile.getNumChannels();
+                            int validBits = wavFile.getValidBits();
+                            long sampleRate = wavFile.getSampleRate();
 
-							audioFile.setChannels(numChannels);
-							audioFile.setSampleRate((int) sampleRate);
-							audioFile.setFrames(noOfFrames);
-							audioFile.setDuration(duration);
-							audioFile.setBitDepth(validBits);
+                            double duration = (((double) numFrames / sampleRate));
 
-							SpeechToText stt = new SpeechToText();
-							String transcription = stt.speechToText(file
-									.toURI().toURL());
+                            audioFile.setChannels(numChannels);
+                            audioFile.setSampleRate((int) sampleRate);
+                            audioFile.setFrames(noOfFrames);
+                            audioFile.setDuration(duration);
+                            audioFile.setBitDepth(validBits);
 
-							audioFile.setUtterance(transcription);
+                            SpeechToText stt = new SpeechToText();
+                            String transcription = stt.speechToText(file.toURI().toURL());
 
-							audioFile.setMimetype(file.toURI().toURL()
-									.openConnection().getContentType());
-						} catch (MalformedURLException e) {
+                            audioFile.setUtterance(transcription);
 
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						audioFile.setCorpus(corpus_db);
-						syncAudioFileService.updateOrSave(audioFile);
-					}
-				}
-			}
+                            audioFile.setMimetype(file.toURI().toURL().openConnection().getContentType());
+                        } catch (MalformedURLException e) {
 
-		}
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        audioFile.setCorpus(corpus_db);
+                        syncStatus.increment();
+                        syncAudioFileService.updateOrSave(audioFile);
+                    }
+                }
+            }
 
-		// Is directory.
-	}
+        }
 
-	/**
-	 * @return the syncAudioFileService
-	 */
-	public SyncAudioFileService getSyncAudioFileService() {
-		return syncAudioFileService;
-	}
+        // Is directory.
+    }
 
-	/**
-	 * @param syncAudioFileService
-	 *            the syncAudioFileService to set
-	 */
-	public void setSyncAudioFileService(
-			SyncAudioFileService syncAudioFileService) {
-		this.syncAudioFileService = syncAudioFileService;
-	}
+    /**
+     * @return the syncAudioFileService
+     */
+    public SyncAudioFileService getSyncAudioFileService()
+    {
+        return syncAudioFileService;
+    }
 
-	public boolean validAudioFile(String fileName) {
-		return fileName
-				.matches("^([a-zA-Z0-9_-]+)\\.[.avi|.AVI|.WMV|.wmv|.wav|.WAV|.mpg|.MPG|.mid|.MID|.asf|.ASF|.mpeg|.MPEG|.mp3]*$");
-	}
+    /**
+     * @param syncAudioFileService the syncAudioFileService to set
+     */
+    public void setSyncAudioFileService(SyncAudioFileService syncAudioFileService)
+    {
+        this.syncAudioFileService = syncAudioFileService;
+    }
 
-	@Override
-	public Integer call() throws Exception {
+    public boolean validAudioFile(String fileName)
+    {
+        return fileName
+            .matches("^([a-zA-Z0-9_-]+)\\.[.avi|.AVI|.WMV|.wmv|.wav|.WAV|.mpg|.MPG|.mid|.MID|.asf|.ASF|.mpeg|.MPEG|.mp3]*$");
+    }
 
-		System.out.println("Syncing files.." + DATASET_PATH);
-		// Audio dataset path.
-		File dataSetPath = new File(DATASET_PATH);
-		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+    @Override
+    public Integer call() throws Exception
+    {
 
-		System.out.println("Syncing files.." + dataSetPath);
-		for (File corpus : dataSetPath.listFiles(ACCEPT_FILTER)) {
+        System.out.println("Syncing files.." + DATASET_PATH);
+        System.out.println(syncAudioFileService);
+        // Audio dataset path.
+        File dataSetPath = new File(DATASET_PATH);
+        MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
 
-			if (corpus == null || corpus.getName().contains("segment")) {
-				continue;
-			}
-			// Check if corpus exists.
-			Corpus corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus
-					.getName());
+        for (File corpus : dataSetPath.listFiles(ACCEPT_FILTER)) {
 
-			// If corpus doesnt exist in the db, add an entry and validate.
-			if (corpus_db == null) {
-				corpus_db = new Corpus();
-				corpus_db.setName(corpus.getName());
-				corpus_db.setPath(corpus.getName());
-				corpus_db.setDescription("Add description " + corpus.getName());
+            if (corpus == null || corpus.getName().contains("segment")) {
+                continue;
+            }
+            // Check if corpus exists.
+            Corpus corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
 
-				System.out.println("Adding new corpus..");
-				syncAudioFileService.updateOrSave(corpus_db);
-				corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus
-						.getName());
-			}
+            // If corpus doesnt exist in the db, add an entry and validate.
+            if (corpus_db == null) {
+                corpus_db = new Corpus();
+                corpus_db.setName(corpus.getName());
+                corpus_db.setPath(corpus.getName());
+                corpus_db.setDescription("Add description " + corpus.getName());
 
-			walkAndUpdate(corpus, corpus.getName(), corpus_db);
+                System.out.println("Adding new corpus..");
+                syncAudioFileService.updateOrSave(corpus_db);
+                corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
+            }
 
-		}
-		return 0;
-	}
+            walkAndUpdate(corpus, corpus.getName(), corpus_db);
+
+        }
+        return 0;
+    }
 
 }

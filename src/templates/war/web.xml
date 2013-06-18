@@ -49,6 +49,10 @@
 		<listener-class>org.codehaus.groovy.grails.web.context.GrailsContextLoaderListener</listener-class>
 	</listener>
 
+	 <listener>
+		<listener-class>net.arunreddy.speechbrowser.servlet.ExecutorContextListener</listener-class>
+	</listener>
+
 	<!-- Grails dispatcher servlet -->
 	<servlet>
 		<servlet-name>grails</servlet-name>
@@ -69,7 +73,7 @@
 
 	<servlet>
 		<servlet-name>fileServlet</servlet-name>
-		<servlet-class>net.arunreddy.speechbrowser.audioutils.FileServlet</servlet-class>
+		<servlet-class>net.arunreddy.speechbrowser.servlet.FileServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
@@ -78,6 +82,27 @@
 		<url-pattern>/fileServlet</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>syncServlet</servlet-name>
+		<servlet-class>net.arunreddy.speechbrowser.servlet.SyncServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>syncServlet</servlet-name>
+		<url-pattern>/syncServlet</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>statusServlet</servlet-name>
+		<servlet-class>net.arunreddy.speechbrowser.servlet.SyncStatusServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>statusServlet</servlet-name>
+		<url-pattern>/statusServlet</url-pattern>
+	</servlet-mapping>
 
 	<session-config>
 		<!-- 30 minutes -->

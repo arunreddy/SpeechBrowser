@@ -20,56 +20,61 @@
 package net.arunreddy.speechbrowser.sync;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 import net.arunreddy.speechbrowser.groovy.sync.SyncAudioFileService;
 
+import org.apache.catalina.core.ApplicationContextFacade;
+
 /**
  * @version $Id$
  */
-public class SyncAudioFiles {
+public class SyncAudioFiles
+{
 
-	private SyncAudioFileService syncAudioFileService;
+    private SyncAudioFileService syncAudioFileService;
 
-	public void synchronizeAudioFiles() {
+    public void synchronizeAudioFiles(ApplicationContextFacade servletContext)
+    {
 
-		try {
-			SyncStatus syncStatus = new SyncStatus();
-			SyncAudioFilesTask task = new SyncAudioFilesTask(syncAudioFileService,
-					syncStatus);
+        System.out.println(servletContext);
+        System.out.println(syncAudioFileService);
 
-			ExecutorService executor = Executors.newFixedThreadPool(5);
-			FutureTask<Integer> ftask = (FutureTask<Integer>) executor.submit(task);
+        ExecutorService executor = (ExecutorService) servletContext.getAttribute("MY_EXECUTOR");
 
-			
-			while(!ftask.isDone()){
-				
-				System.out.println("-------------------");
-				System.out.println(syncStatus);
-				System.out.println("-------------------");
-				
-				Thread.sleep(5000);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        SyncStatus syncStatus = new SyncStatus();
 
-	/**
-	 * @return the syncAudioFileService
-	 */
-	public SyncAudioFileService getSyncAudioFileService() {
-		return syncAudioFileService;
-	}
+        
+        SyncVolumeEstimator estimator=new SyncVolumeEstimator();
+        estimator.setSyncAudioFileService(syncAudioFileService);
+        int totalFiles =estimator.estimateVolume();
+        syncStatus.setTotalFiles(totalFiles);
 
-	/**
-	 * @param syncAudioFileService
-	 *            the syncAudioFileService to set
-	 */
-	public void setSyncAudioFileService(
-			SyncAudioFileService syncAudioFileService) {
-		this.syncAudioFileService = syncAudioFileService;
-	}
+        
+        
+        SyncAudioFilesTask task = new SyncAudioFilesTask(syncStatus);
+        task.setSyncAudioFileService(syncAudioFileService);
+
+        FutureTask<Integer> ftask = (FutureTask<Integer>) executor.submit(task);
+
+        servletContext.setAttribute("ftask", ftask);
+        servletContext.setAttribute("syncstatus", syncStatus);
+    }
+
+    /**
+     * @return the syncAudioFileService
+     */
+    public SyncAudioFileService getSyncAudioFileService()
+    {
+        return syncAudioFileService;
+    }
+
+    /**
+     * @param syncAudioFileService the syncAudioFileService to set
+     */
+    public void setSyncAudioFileService(SyncAudioFileService syncAudioFileService)
+    {
+        this.syncAudioFileService = syncAudioFileService;
+    }
 
 }

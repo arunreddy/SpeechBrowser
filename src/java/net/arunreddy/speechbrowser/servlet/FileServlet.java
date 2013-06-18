@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.arunreddy.speechbrowser.audioutils;
+package net.arunreddy.speechbrowser.servlet;
 
 import java.io.DataInputStream;
 import java.io.File;
