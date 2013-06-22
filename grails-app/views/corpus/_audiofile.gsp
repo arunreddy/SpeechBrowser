@@ -8,19 +8,17 @@
 	<div class="span2">
 		${audioFile.name}
 	</div>
-	<div class="span2">
+	<div class="span1">
 		<g:formatNumber number="${audioFile.duration}" type="number"
 			maxFractionDigits="2" roundingMode="HALF_DOWN" />
 		s
 	</div>
-	<div class="span3 pull-right">
+	<div class="span5">
+		${audioFile.utterance}
+	</div>
+	<div class="span2 pull-right">
 		<div class="pull-right">
-			<button class="btn btn-mini utterance" type="button" audio="${audioFile.id}">
-				<i class="icon-comment"></i>&nbsp;Utterance
-			</button>
-		</div>
-		<div class="pull-right">
-			<button class="btn btn-mini segment" type="button" audio="${audioFile.id}">
+			<button class="btn btn-mini segment" type="button" audio="${audioFile.id}" file="${audioFile.name}">
 				<i class="icon-th-list"></i>&nbsp;Segment
 			</button>
 		</div>

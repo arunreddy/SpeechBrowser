@@ -33,25 +33,24 @@
 	<div id="wrap">
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
-				<div class="container">
+				<div class="container-fluid">
 					<button type="button" class="btn btn-navbar" data-toggle="collapse"
 						data-target=".nav-collapse">
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="brand" href="#">Project name</a>
+					<a class="brand" href="/SpeechBrowser/corpus/index/1">Speech Browser</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li class="active"><a href="#">Home</a></li>
-							<li><a href="#about">About</a></li>
-							<li><a href="#contact">Contact</a></li>
+							<li class="active"><a href="/SpeechBrowser/corpus/index/1">Corpus</a></li>
+							<li><a href="/SpeechBrowser/corpus/settings">Settings</a></li>
 						</ul>
 					</div>
 					<!--/.nav-collapse -->
 				</div>
 			</div>
 		</div>
-		<div id="main-container" class="container">
+		<div id="main-container" class="container-fluid">
 			<g:layoutBody />
 		</div>
 		<div id="push"></div>
@@ -60,8 +59,7 @@
 	<div id="footer">
 		<div class="container">
 			<p class="muted credit">
-				Example courtesy <a href="http://martinbean.co.uk">Martin Bean</a>
-				and <a href="http://ryanfait.com/sticky-footer/">Ryan Fait</a>.
+				Arizona State University
 			</p>
 		</div>
 	</div>

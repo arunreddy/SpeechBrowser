@@ -22,6 +22,11 @@ package net.arunreddy.speechbrowser.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.arunreddy.speechbrowser.sync.SyncStatus;
 
 /**
@@ -40,8 +45,9 @@ public class SyncStatusServlet extends HttpServlet
         // Get the printwriter object from response to write the required json object to the output stream
         PrintWriter out = response.getWriter();
         // Assuming your json object is **jsonObject**, perform the following, it will return your json object
-        Gson gson = new Gson();
-        out.print(jsonObject);
+
+        String json="{ \"count\":\""+status.getCounter()+"\" , \"total\":\""+status.getTotalFiles()+"\" }";
+        out.print(json);
         out.flush();
     }
 }

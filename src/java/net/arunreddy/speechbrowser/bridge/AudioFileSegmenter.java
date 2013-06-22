@@ -33,6 +33,7 @@ public class AudioFileSegmenter {
 		sAudioFile.setSampleRate(gAudioFile.getSampleRate());
 		sAudioFile.setName(gAudioFile.getName());
 		sAudioFile.setMimetype(gAudioFile.getMimetype());
+		sAudioFile.setTranscription(gAudioFile.getUtterance());
 
 		System.out.println("Successfully set all the required params.");
 
