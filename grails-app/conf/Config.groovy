@@ -73,6 +73,19 @@ environments {
     }
 }
 
+tomcat.deploy.username="arunreddy"
+tomcat.deploy.password="arunreddy"
+tomcat.deploy.url="http://localhost:8080/manager/text"
+
+grails{
+    tomcat{
+        jvmArgs = ["-server", "-XX:MaxPermSize=512m", "-XX:MaxNewSize=256m", "-XX:NewSize=256m",
+ "-Xms768m", "-Xmx1024m", "-XX:SurvivorRatio=128", "-XX:MaxTenuringThreshold=0",
+"-XX:+UseTLAB", "-XX:+UseConcMarkSweepGC", "-XX:+CMSClassUnloadingEnabled",
+"-XX:+CMSIncrementalMode", "-XX:-UseGCOverheadLimit", "-XX:+ExplicitGCInvokesConcurrent"]
+    }
+}
+
 // log4j configuration
 log4j = {
     // Example of changing the log pattern for the default console appender:

@@ -58,6 +58,9 @@ grails.project.dependency.resolution = {
 
         runtime ":database-migration:1.3.2"
 
+        compile ":shiro:1.1.4"
+
+
         compile ':cache:1.0.1'
     }
 }

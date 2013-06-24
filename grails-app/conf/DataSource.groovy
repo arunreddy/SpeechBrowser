@@ -31,10 +31,7 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:mysql://127.0.0.1:3306/speechbrowser_prod?useUnicode=yes&characterEncoding=UTF-8"
-	    username = System.env.grails_user 
-            password = System.env.grails_password
+	    jndiName = "java:comp/env/jdbc/speechbrowser"
         }
     }
 }
