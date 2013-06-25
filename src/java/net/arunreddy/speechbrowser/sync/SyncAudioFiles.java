@@ -19,9 +19,16 @@
  */
 package net.arunreddy.speechbrowser.sync;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 
+import javax.activation.MimetypesFileTypeMap;
+
+import net.arunreddy.speechbrowser.groovy.Corpus;
 import net.arunreddy.speechbrowser.groovy.sync.SyncAudioFileService;
 
 import org.apache.catalina.core.ApplicationContextFacade;
@@ -31,34 +38,91 @@ import org.apache.catalina.core.ApplicationContextFacade;
  */
 public class SyncAudioFiles
 {
+    public static final String DATASET_PATH = System.getenv("speech_data_dir");
+    public static final String CONFIGS_PATH = System.getenv("configs_dir");
+
+    
+    private static final FilenameFilter ACCEPT_FILTER = new FilenameFilter()
+    {
+
+        @Override
+        public boolean accept(File dir, String name)
+        {
+            if (name.startsWith(".")) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    };
 
     private SyncAudioFileService syncAudioFileService;
 
     public void synchronizeAudioFiles(ApplicationContextFacade servletContext)
     {
 
-        System.out.println(servletContext);
-        System.out.println(syncAudioFileService);
-
         ExecutorService executor = (ExecutorService) servletContext.getAttribute("MY_EXECUTOR");
 
-        SyncStatus syncStatus = new SyncStatus();
-
+        List<SyncStatus> syncStatusList = null;
         
-        SyncVolumeEstimator estimator=new SyncVolumeEstimator();
-        estimator.setSyncAudioFileService(syncAudioFileService);
-        int totalFiles =estimator.estimateVolume();
-        syncStatus.setTotalFiles(totalFiles);
-
+        if(servletContext.getAttribute("syncStatusList")!=null){
+            syncStatusList = (List<SyncStatus>) servletContext.getAttribute("syncStatusList");
+        }else{
+            syncStatusList= new ArrayList<SyncStatus>();
+        }
         
         
-        SyncAudioFilesTask task = new SyncAudioFilesTask(syncStatus);
-        task.setSyncAudioFileService(syncAudioFileService);
+        
+        // Audio dataset path.
 
-        FutureTask<Integer> ftask = (FutureTask<Integer>) executor.submit(task);
+        try {
+            File dataSetPath = new File(DATASET_PATH);
+            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
 
-        servletContext.setAttribute("ftask", ftask);
-        servletContext.setAttribute("syncstatus", syncStatus);
+            for (File corpus : dataSetPath.listFiles(ACCEPT_FILTER)) {
+
+                if (corpus == null || corpus.getName().contains("segment")) {
+                    continue;
+                }
+                // Check if corpus exists.
+                Corpus corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
+
+                // If corpus doesnt exist in the db, add an entry and validate.
+                if (corpus_db == null) {
+                    corpus_db = new Corpus();
+                    corpus_db.setName(corpus.getName());
+                    corpus_db.setPath(corpus.getName());
+                    corpus_db.setDescription("Add description " + corpus.getName());
+
+                    syncAudioFileService.updateOrSave(corpus_db);
+                    corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
+                }
+
+                SyncStatus syncStatus = new SyncStatus();
+
+                SyncVolumeEstimator estimator = new SyncVolumeEstimator();
+                estimator.setSyncAudioFileService(syncAudioFileService);
+                int totalFiles = estimator.estimateVolume();
+                syncStatus.setTotalFiles(totalFiles);
+                
+                File configFile = new File(CONFIGS_PATH+File.separator+"sphinx4"+File.separator+corpus.getName()+File.separator+"config.xml");
+                System.out.println(executor);
+
+                SyncAudioFilesTask task = new SyncAudioFilesTask(syncStatus,configFile.toURI().toURL(),corpus_db,corpus);
+                task.setSyncAudioFileService(syncAudioFileService);
+
+                FutureTask<Integer> ftask = (FutureTask<Integer>) executor.submit(task);
+
+                syncStatusList.add(syncStatus);
+            }
+            
+            servletContext.setAttribute("syncStatusList",syncStatusList);
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+
     }
 
     /**

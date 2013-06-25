@@ -35,8 +35,6 @@ public class AudioFileSegmenter {
 		sAudioFile.setMimetype(gAudioFile.getMimetype());
 		sAudioFile.setTranscription(gAudioFile.getUtterance());
 
-		System.out.println("Successfully set all the required params.");
-
 		net.arunreddy.speech.segmenter.AudioFileSegmenter fileSegmenter = new net.arunreddy.speech.segmenter.AudioFileSegmenter();
 
 		try {

@@ -6,6 +6,7 @@ package net.arunreddy.speechbrowser.sync;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.Callable;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -28,6 +29,14 @@ public class SyncAudioFilesTask implements Callable<Integer>
 
     private SyncStatus syncStatus;
 
+    private SpeechToText stt;
+
+    private URL configURL;
+
+    private Corpus corpus;
+
+    private File corpusFile;
+
     private static final FilenameFilter ACCEPT_FILTER = new FilenameFilter()
     {
 
@@ -42,12 +51,24 @@ public class SyncAudioFilesTask implements Callable<Integer>
         }
     };
 
-    public SyncAudioFilesTask(SyncStatus syncStatus)
+    public SyncAudioFilesTask(SyncStatus syncStatus, Corpus corpus, File corpusFile)
+    {
+        this(syncStatus, null, corpus, corpusFile);
+
+    }
+
+    public SyncAudioFilesTask(SyncStatus syncStatus, URL configURL, Corpus corpus, File corpusFile)
     {
         this.syncStatus = syncStatus;
         System.out.println(syncStatus.getSyncAudioFileService());
         this.syncAudioFileService = syncStatus.getSyncAudioFileService();
+        this.configURL = configURL;
+        this.corpus = corpus;
+        this.corpusFile = corpusFile;
 
+        if (configURL != null) {
+            stt = new SpeechToText(configURL);
+        }
     }
 
     /**
@@ -86,6 +107,7 @@ public class SyncAudioFilesTask implements Callable<Integer>
                         try {
 
                             path = file.toURI().toURL().getPath();
+
                             audioFile.setPath(path.replaceAll(DATASET_PATH + "/", ""));
 
                             // Set audio properties.
@@ -108,10 +130,10 @@ public class SyncAudioFilesTask implements Callable<Integer>
                             audioFile.setDuration(duration);
                             audioFile.setBitDepth(validBits);
 
-                            SpeechToText stt = new SpeechToText();
-                            String transcription = stt.speechToText(file.toURI().toURL());
-
-                            audioFile.setUtterance(transcription);
+                            if (stt != null) {
+                                String transcription = stt.speechToText(file.toURI().toURL());
+                                audioFile.setUtterance(transcription);
+                            }
 
                             audioFile.setMimetype(file.toURI().toURL().openConnection().getContentType());
                         } catch (MalformedURLException e) {
@@ -158,35 +180,9 @@ public class SyncAudioFilesTask implements Callable<Integer>
     public Integer call() throws Exception
     {
 
-        System.out.println("Syncing files.." + DATASET_PATH);
-        System.out.println(syncAudioFileService);
-        // Audio dataset path.
-        File dataSetPath = new File(DATASET_PATH);
-        MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+        System.out.println("<<<CALLED>>>");
+        walkAndUpdate(corpusFile, corpusFile.getName(), corpus);
 
-        for (File corpus : dataSetPath.listFiles(ACCEPT_FILTER)) {
-
-            if (corpus == null || corpus.getName().contains("segment")) {
-                continue;
-            }
-            // Check if corpus exists.
-            Corpus corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
-
-            // If corpus doesnt exist in the db, add an entry and validate.
-            if (corpus_db == null) {
-                corpus_db = new Corpus();
-                corpus_db.setName(corpus.getName());
-                corpus_db.setPath(corpus.getName());
-                corpus_db.setDescription("Add description " + corpus.getName());
-
-                System.out.println("Adding new corpus..");
-                syncAudioFileService.updateOrSave(corpus_db);
-                corpus_db = (Corpus) syncAudioFileService.getCorpus(corpus.getName());
-            }
-
-            walkAndUpdate(corpus, corpus.getName(), corpus_db);
-
-        }
         return 0;
     }
 

@@ -79,66 +79,153 @@ html,body {
 /* Progress bar.
  -----------------------------------------------------*/
 .loader {
-    text-align: center;    
+	text-align: center;
 }
+
 .loader span {
-    display: inline-block;
-    vertical-align: middle;
-    width: 10px;
-    height: 10px;
-    margin: 50px auto;
-    background: black;
-    border-radius: 50px;
-    -webkit-animation: loader 0.9s infinite alternate;
-    -moz-animation: loader 0.9s infinite alternate;
+	display: inline-block;
+	vertical-align: middle;
+	width: 10px;
+	height: 10px;
+	margin: 50px auto;
+	background: black;
+	border-radius: 50px;
+	-webkit-animation: loader 0.9s infinite alternate;
+	-moz-animation: loader 0.9s infinite alternate;
 }
+
 .loader span:nth-of-type(2) {
-    -webkit-animation-delay: 0.3s;
-    -moz-animation-delay: 0.3s;
+	-webkit-animation-delay: 0.3s;
+	-moz-animation-delay: 0.3s;
 }
+
 .loader span:nth-of-type(3) {
-    -webkit-animation-delay: 0.6s;
-    -moz-animation-delay: 0.6s;
-}
-@-webkit-keyframes loader {
-  0% {
-    width: 10px;
-    height: 10px;
-    opacity: 0.9;
-    -webkit-transform: translateY(0);
-  }
-  100% {
-    width: 24px;
-    height: 24px;
-    opacity: 0.1;
-    -webkit-transform: translateY(-21px);
-  }
-}
-@-moz-keyframes loader {
-  0% {
-    width: 10px;
-    height: 10px;
-    opacity: 0.9;
-    -moz-transform: translateY(0);
-  }
-  100% {
-    width: 24px;
-    height: 24px;
-    opacity: 0.1;
-    -moz-transform: translateY(-21px);
-  }
+	-webkit-animation-delay: 0.6s;
+	-moz-animation-delay: 0.6s;
 }
 
+@
+-webkit-keyframes loader { 0% {
+	width: 10px;
+	height: 10px;
+	opacity: 0.9;
+	-webkit-transform: translateY(0);
+}
 
+100%
+{
+width
+:
+ 
+24
+px
+;
 
+    
+height
+:
+ 
+24
+px
+;
 
- .ui-progressbar {
-    position: relative;
-  }
-  .progress-label {
-    position: absolute;
-    left: 50%;
-    top: 4px;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 #fff;
-  }
+    
+opacity
+:
+ 
+0
+.1
+;
+
+    
+-webkit-transform
+:
+ 
+translateY
+(-21px);
+
+  
+}
+}
+@
+-moz-keyframes loader { 0% {
+	width: 10px;
+	height: 10px;
+	opacity: 0.9;
+	-moz-transform: translateY(0);
+}
+
+100%
+{
+width
+:
+ 
+24
+px
+;
+
+    
+height
+:
+ 
+24
+px
+;
+
+    
+opacity
+:
+ 
+0
+.1
+;
+
+    
+-moz-transform
+:
+ 
+translateY
+(-21px);
+
+  
+}
+}
+.ui-progressbar {
+	position: relative;
+}
+
+.progress-label {
+	position: absolute;
+	left: 50%;
+	top: 4px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+/**
+    SIGN IN
+  ************************************************/
+.form-signin {
+	max-width: 300px;
+	padding: 19px 29px 29px;
+	margin: 0 auto 20px;
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.form-signin .form-signin-heading,.form-signin .checkbox {
+	margin-bottom: 10px;
+}
+
+.form-signin input[type="text"],.form-signin input[type="password"] {
+	font-size: 16px;
+	height: auto;
+	margin-bottom: 15px;
+	padding: 7px 9px;
+}

@@ -6,11 +6,13 @@ package net.arunreddy.speechbrowser
  */
 class SecurityFilters {
     def filters = {
-        all(uri: "/**") {
+        corpus(controller:"corpus", action:"*") {
             before = {
-                // Ignore direct views (e.g. the default main index page).
-                if (!controllerName) return true
-
+                accessControl { true }
+            }
+        }
+        filebrowser(uri: "/fileServlet") {
+            before = {
                 // Access control by convention.
                 accessControl()
             }

@@ -27,8 +27,7 @@ class AudioFile {
 		path(blank: false)
 		name(blank: false)
 		mimetype(blank:false)
-		utterance(blank:true)
-		utterance defaultValue : 'NONE'
+		utterance nullable: true
 	}
 
 	static mapping = {

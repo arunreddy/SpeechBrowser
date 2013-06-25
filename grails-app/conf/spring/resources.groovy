@@ -1,11 +1,14 @@
-// Place your Spring DSL code here
 import net.arunreddy.speechbrowser.bridge.AudioFileSegmenter;
 import net.arunreddy.speechbrowser.groovy.sync.SyncAudioFileService;
-import net.arunreddy.speechbrowser.sync.SyncAudioFiles
+import net.arunreddy.speechbrowser.sync.SyncAudioFiles;
+import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
+
 
 
 beans = {
-	syncAudioFiles(SyncAudioFiles){ syncAudioFileService = ref("syncAudioFileService") }
+    syncAudioFiles(SyncAudioFiles){ syncAudioFileService = ref("syncAudioFileService") }
 
-	segmentAudioFiles(AudioFileSegmenter){ audioSegmenterService = ref("audioSegmenterService") }
+    segmentAudioFiles(AudioFileSegmenter){ audioSegmenterService = ref("audioSegmenterService") }
+
+    credentialMatcher(Sha256CredentialsMatcher) { storedCredentialsHexEncoded = true }
 }

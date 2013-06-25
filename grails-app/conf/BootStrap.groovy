@@ -1,24 +1,34 @@
-import net.arunreddy.speechbrowser.groovy.AudioFile;
-import net.arunreddy.speechbrowser.groovy.Corpus;
+import net.arunreddy.speechbrowser.User
+import net.arunreddy.speechbrowser.groovy.AudioFile
+import net.arunreddy.speechbrowser.groovy.Corpus
+
+import org.apache.shiro.crypto.hash.Sha256Hash
+
+
 
 class BootStrap {
 
-	def init = { servletContext ->
-//
-//		Corpus cvar
-//		//if corpus doesnt exist.
-//		if(!Corpus.count()){
-//			cvar = new Corpus(name: "DigitData-wavs", path: "DigitData-wavs",description:"A new description" ).save(failOnError: true)
-//		}
-//
-//		if(!AudioFile.count()){
-//			new AudioFile(name: "101_m01.wav",path:"DigitData-wavs/101",mimetype: "audio/x-wav",corpus:cvar).save(failOnError: true)
-//			new AudioFile(name: "101_m02.wav",path:"DigitData-wavs/101",mimetype: "audio/x-wav",corpus:cvar).save(failOnError: true)
-//		}
-	}
-	def destroy = {
+    def init = { servletContext ->
 
-		Corpus.where{ }.deleteAll()
-		CorpusDir.where {}.deleteAll()
-	}
+        
+        //Add corpus.
+        def corpus = new Corpus(path:"DigitData-wavs",name:"DigitData-wavs",description:"DigitData-wavs").save(failOnError: true)
+        
+        //Add audio files.
+        new AudioFile(path:"DigitData-wavs/101/101_m01.wav",name:"101_m01.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m02.wav",name:"101_m02.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m03.wav",name:"101_m03.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m04.wav",name:"101_m04.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m05.wav",name:"101_m05.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m06.wav",name:"101_m06.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m07.wav",name:"101_m07.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+        new AudioFile(path:"DigitData-wavs/101/101_m08.wav",name:"101_m08.wav",mimetype:"audio/x-wav",corpus:corpus).save(failOnError: true);
+
+        def user = new User(username: "user123", passwordHash: new Sha256Hash("password").toHex())
+        user.addToPermissions("*:*")
+        user.save()
+    }
+    def destroy = {
+
+    }
 }
