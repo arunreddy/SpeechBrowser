@@ -1,30 +1,29 @@
 datasource{
-    pooled = true
-    driverClassName = "com.mysql.jdbc.Driver"
-    dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
 }
 
 hibernate {
-    cache.use_second_level_cache=false
-    cache.use_query_cache=false
-    //    cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
+    cache.use_second_level_cache=true
+    cache.use_query_cache=true
+    cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
 }
 // environment specific settings
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://localhost/speechbrowser_dev?useUnicode=yes&characterEncoding=UTF-8"
-            username = "root"
-            password = "arunreddy"
+            dbCreate = "update" // one of 'create', 'create-drop','update'
+            url = "jdbc:h2:mem:devDb"
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
         }
     }
     test {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:mysql://localhost/sec_treasurer_prod?useUnicode=yes&characterEncoding=UTF-8"
-            username = "root"
-            password = "root"
+            dbCreate = "create-drop"
+            url = "jdbc:h2:mem:testDb"
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
         }
     }
     production { dataSource { jndiName = "java:comp/env/jdbc/speechbrowser" } }
