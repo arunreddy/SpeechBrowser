@@ -1,0 +1,4 @@
+<%@ page contentType="text/xml;charset=UTF-8" %>
+<cross-domain-policy>
+<allow-access-from domain="*" />
+</cross-domain-policy>

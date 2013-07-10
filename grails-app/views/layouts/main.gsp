@@ -44,21 +44,25 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li class="active"><a href="/SpeechBrowser/corpus/index/1">Corpus</a></li>
+							<li><a href="/SpeechBrowser/voice">Voice Recorder</a></li>
+
 							<li><a href="/SpeechBrowser/corpus/settings">Settings</a></li>
 						</ul>
 					</div>
 					<div class="pull-right">
 						<ul class="nav nav-pills">
 							<shiro:isLoggedIn>
-								<li><a href="${createLink(action: 'signOut',controller:'auth')}">Logout</a></li>
+								<li><a
+									href="${createLink(action: 'signOut',controller:'auth')}">Logout</a></li>
 								<li class="spacing">&nbsp;</li>
 								<li class="current-user"><g:link uri="/profile">
 										<i class="icon-user icon-white"></i> &nbsp;
-										&nbsp;<shiro:principal/>
+										&nbsp;<shiro:principal />
 									</g:link></li>
 							</shiro:isLoggedIn>
 							<shiro:isNotLoggedIn>
-								<li><a href="${createLink(action: 'login',controller:'auth')}?targetUri=${request.forwardURI}"
+								<li><a
+									href="${createLink(action: 'login',controller:'auth')}?targetUri=${request.forwardURI}"
 									class="login">Login</a></li>
 								<li class="spacing">&nbsp;</li>
 								<li><a href="/register">Create Account</a></li>

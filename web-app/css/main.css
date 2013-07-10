@@ -115,36 +115,106 @@ html,body {
 100%
 {
 width
+
+
+
+
+
+
 :
+
+
+
  
+
+
+
 24
 px
-;
 
-    
+
+
+
+
+
+;
 height
+
+
+
+
+
+
 :
+
+
+
  
+
+
+
 24
 px
-;
 
-    
+
+
+
+
+
+;
 opacity
+
+
+
+
+
+
 :
+
+
+
  
+
+
+
 0
 .1
+
+
+
+
+
+
 ;
-
-    
 -webkit-transform
-:
- 
-translateY
-(-21px);
 
-  
+
+
+
+
+
+:
+
+
+
+ 
+
+
+
+translateY
+
+
+
+
+
+
+(-21
+px
+
+
+
+
+);
 }
 }
 @
@@ -158,36 +228,106 @@ translateY
 100%
 {
 width
+
+
+
+
+
+
 :
+
+
+
  
+
+
+
 24
 px
-;
 
-    
+
+
+
+
+
+;
 height
+
+
+
+
+
+
 :
+
+
+
  
+
+
+
 24
 px
-;
 
-    
+
+
+
+
+
+;
 opacity
+
+
+
+
+
+
 :
+
+
+
  
+
+
+
 0
 .1
+
+
+
+
+
+
 ;
-
-    
 -moz-transform
-:
- 
-translateY
-(-21px);
 
-  
+
+
+
+
+
+:
+
+
+
+ 
+
+
+
+translateY
+
+
+
+
+
+
+(-21
+px
+
+
+
+
+);
 }
 }
 .ui-progressbar {
@@ -228,4 +368,20 @@ translateY
 	height: auto;
 	margin-bottom: 15px;
 	padding: 7px 9px;
+}
+
+/**
+*	Voice recorder
+*/
+.audio-graphic {
+	padding:10px;
+	background-color: #eee;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	min-height:300px;
 }
