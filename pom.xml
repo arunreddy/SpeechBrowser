@@ -134,7 +134,15 @@
 			<artifactId>shiro-core</artifactId>
 			<version>1.2.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>net.arunreddy.speechbrowser</groupId>
+			<artifactId>digitwavs</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
+
+
 
 	<build>
 		<pluginManagement />

@@ -38,7 +38,18 @@ function timecode(ms) {
 
 $(document).ready(function() {
 	Recorder.initialize({
-		swfSrc : "static/recorder.swf"
+		swfSrc : "recorder.swf"
+	});
+
+	// Refresh button.
+	$('#refresh-btn').click(function() {
+		$.get('voice/utterance', function(data) {
+			$('#utterance').html(data.result)
+		});
+	});
+	
+	$('#play').click(function(){
+		
 	});
 })
 
@@ -72,9 +83,12 @@ function upload() {
 		url : "voice/upload",
 		audioParam : "your_file",
 		success : function() {
-			alert("your file was uploaded!");
-			$.get('voice/transcribe', function(data) {
-				alert('Load was performed.');
+			var utterance = $('#utterance').text();
+			$.post("voice/transcribe", {
+				'utterance' : utterance
+			}, function(data) {
+				$('#transciption').html(data.result);
+				$('#wer').html(data.wer);
 			});
 		}
 	});

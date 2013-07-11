@@ -18,3 +18,8 @@ stacktrace.log
 .project
 .classpath
 plugins/
+
+*.wav
+*.mp3
+*.avi
+*.mpg

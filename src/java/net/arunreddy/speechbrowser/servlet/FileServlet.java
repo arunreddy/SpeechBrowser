@@ -26,13 +26,19 @@ public class FileServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String dataPath = System.getenv("speech_data_dir");
-		if(!dataPath.endsWith(File.separatorChar+"")){
-			dataPath+=File.separatorChar;
+		String filePath = request.getParameter("path");
+
+		if (!request.getParameterMap().containsKey("direct")) {
+			String dataPath = System.getenv("speech_data_dir");
+			if (!dataPath.endsWith(File.separatorChar + "")) {
+				dataPath += File.separatorChar;
+			}
+			filePath = dataPath + request.getParameter("path");
 		}
-		String filePath = dataPath+request.getParameter("path");
 
 		File file = new File(filePath);
+		
+		System.out.println(file.getAbsolutePath());
 		int length = 0;
 		ServletOutputStream outStream = response.getOutputStream();
 		ServletContext context = getServletConfig().getServletContext();
@@ -60,8 +66,7 @@ public class FileServlet extends HttpServlet {
 
 		in.close();
 		outStream.close();
-		
-		
+
 	}
 
 }

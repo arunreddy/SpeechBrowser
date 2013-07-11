@@ -21,35 +21,39 @@ package net.arunreddy.speechbrowser.asr;
 
 import java.io.File;
 
+import net.arunreddy.speech.DictionaryGenerator;
 import net.arunreddy.speech.SpeechToText;
 
 /**
  * @version $Id$
  */
-public class ASREndPoint
-{
+public class ASREndPoint {
 
-    private SpeechToText stt;
+	private SpeechToText stt;
 
-    public static final String CONFIGS_PATH = System.getenv("configs_dir");
+	public static final String CONFIGS_PATH = System.getenv("configs_dir");
 
-    public String getTranscription(String filePath)
-    {
+	public String getTranscription(String filePath) {
 
-        try {
-            File configFile =
-                new File(CONFIGS_PATH + File.separator + "sphinx4" + File.separator + "DigitData-wavs" + File.separator
-                    + "config.xml");
-            stt = new SpeechToText(configFile.toURI().toURL());
-            File audioFile = new File(filePath);
-            if (audioFile.exists()) {
-                String transcription = stt.speechToText(audioFile.toURI().toURL());
-                return transcription;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		try {
+			File configFile = new File(CONFIGS_PATH + File.separator
+					+ "sphinx4" + File.separator + "DigitData-wavs"
+					+ File.separator + "config.xml");
+			stt = new SpeechToText(configFile.toURI().toURL());
+			File audioFile = new File(filePath);
+			if (audioFile.exists()) {
+				String transcription = stt.speechToText(audioFile.toURI()
+						.toURL());
+				return transcription;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return null;
-    }
+		return null;
+	}
+
+	public String getRandomUtterance() {
+		return new DictionaryGenerator().getRandomUtterance();
+	}
 }
