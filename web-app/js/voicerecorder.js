@@ -1,24 +1,21 @@
-/**
- * Voice recorder Speak function
- */
+function toggleRecording(e) {
 
-function speak() {
-	console.log("Speaking..");
-	Recorder.record({
-		start : function() {
-			 alert("recording starts now. press stop when youre done. and then play or upload if you want.");
-		},
-		progress : function(milliseconds) {
-			document.getElementById("time").innerHTML = timecode(milliseconds);
-		}
-	});
-}
+	var recorder = $('#' + e.id);
 
-/**
- * Voice recorder Save function
- */
-function saveAudio() {
-	console.log("Saving audio.")
+	if (!recorder.hasClass('recording')) {
+		console.log("Recording..");
+		$('#record-label').html('Recording : <span id="time">0:00</span>');
+		record();
+	} else {
+		console.log("Saving..")
+		stop();
+		$('#record-label').html('Playing...');
+		play();
+		upload();
+		$('#record-label').html('Click to record.');
+	}
+
+	recorder.toggleClass('recording');
 }
 
 function timecode(ms) {
@@ -72,10 +69,13 @@ function stop() {
 
 function upload() {
 	Recorder.upload({
-		url : "https://example.com/upload",
+		url : "voice/upload",
 		audioParam : "your_file",
 		success : function() {
 			alert("your file was uploaded!");
+			$.get('voice/transcribe', function(data) {
+				alert('Load was performed.');
+			});
 		}
 	});
 }

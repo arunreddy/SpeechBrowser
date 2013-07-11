@@ -104,232 +104,6 @@ html,body {
 	-moz-animation-delay: 0.6s;
 }
 
-@
--webkit-keyframes loader { 0% {
-	width: 10px;
-	height: 10px;
-	opacity: 0.9;
-	-webkit-transform: translateY(0);
-}
-
-100%
-{
-width
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-24
-px
-
-
-
-
-
-
-;
-height
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-24
-px
-
-
-
-
-
-
-;
-opacity
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-0
-.1
-
-
-
-
-
-
-;
--webkit-transform
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-translateY
-
-
-
-
-
-
-(-21
-px
-
-
-
-
-);
-}
-}
-@
--moz-keyframes loader { 0% {
-	width: 10px;
-	height: 10px;
-	opacity: 0.9;
-	-moz-transform: translateY(0);
-}
-
-100%
-{
-width
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-24
-px
-
-
-
-
-
-
-;
-height
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-24
-px
-
-
-
-
-
-
-;
-opacity
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-0
-.1
-
-
-
-
-
-
-;
--moz-transform
-
-
-
-
-
-
-:
-
-
-
- 
-
-
-
-translateY
-
-
-
-
-
-
-(-21
-px
-
-
-
-
-);
-}
-}
 .ui-progressbar {
 	position: relative;
 }
@@ -342,7 +116,7 @@ px
 	text-shadow: 1px 1px 0 #fff;
 }
 
-/**
+/*************************************************
     SIGN IN
   ************************************************/
 .form-signin {
@@ -370,11 +144,11 @@ px
 	padding: 7px 9px;
 }
 
-/**
-*	Voice recorder
-*/
+/*************************************************
+    			VOICE RECORDER
+  ************************************************/
 .audio-graphic {
-	padding:10px;
+	padding: 10px;
 	background-color: #eee;
 	border: 1px solid #e5e5e5;
 	-webkit-border-radius: 5px;
@@ -383,5 +157,18 @@ px
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-	min-height:300px;
+}
+
+.notice {
+	padding: 5px;
+}
+
+#record.recording {
+	background: red;
+	background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%, lightgrey 75%
+		, lightgrey 100%, #7db9e8 100%);
+}
+
+#record-label{
+	padding:10px;
 }
